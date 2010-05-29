@@ -138,4 +138,4 @@ class Cloud(object):
         result = self.auth_opener.open(DeleteRequest(href))
         if result.code == 200:
             return True
-        raise CloudException('Deletion of failed')
+        raise CloudException('Deletion failed')
