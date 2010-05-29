@@ -19,7 +19,7 @@ else:
     print 'Neither Python 2.7 nor ordereddict is installed. Fileupload disabled.'
     FILE_UPLOAD = 0
 
-__version__ = 'beta'
+__version__ = '0.6'
 
 PROTOCOL = 'http://'
     
