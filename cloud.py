@@ -106,8 +106,6 @@ class Cloud(object):
         if self.auth_success == 0:
             raise CloudException('Not authed')
 
-        #values = {'name': name, 'redirect_url': bookmark_uri}
-        #data = urllib.urlencode(values)
         values = {'item': {'name': name, 'redirect_url': bookmark_uri}}
         data = json.dumps(values, encoding='utf-8')
         request = urllib2.Request('%s%s/items' % (PROTOCOL, AUTH_URI), data)
