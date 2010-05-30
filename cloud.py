@@ -4,21 +4,24 @@ import json
 import os
 
 # Python does not support multipart/form-data encoding out of the box
-FILE_UPLOAD = 1
 try:
     import poster
+    POSTER = True
 except ImportError:
-    print 'Poster is not installed. Fileupload disabled.'
-    FILE_UPLOAD = 0
+    POSTER = False
 
+# We need ordereddicts as Amazon S3 expects 'file' to be the last param
+# in the request's body when uploading.
+ORDERED_DICT = True
 try:
     from collections import OrderedDict
 except ImportError:
-    from ordereddict import OrderedDict
-else:
-    print 'Neither Python 2.7 nor ordereddict is installed. Fileupload disabled.'
-    FILE_UPLOAD = 0
+    try:
+        from ordereddict import OrderedDict
+    except ImportError:
+        ORDERED_DICT = False
 
+# TODO: Tuple
 __version__ = '0.6'
 
 PROTOCOL = 'http://'
@@ -45,6 +48,7 @@ class Cloud(object):
         self.auth_success = 0
 
     def auth(self, username, password):
+        # TODO: Check if already authed
         passwordmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
         passwordmgr.add_password(None, AUTH_URI, username, password)
         auth = urllib2.HTTPDigestAuthHandler(passwordmgr)
@@ -53,7 +57,7 @@ class Cloud(object):
         self.auth_opener.addheaders = [('User-Agent', USER_AGENT),
                                        ('Accept', 'application/json'),]
 
-        if FILE_UPLOAD:
+        if POSTER:
             self.upload_auth_opener = poster.streaminghttp.register_openers()
             self.upload_auth_opener.add_handler(auth)
             self.upload_auth_opener.addheaders = [('User-Agent', USER_AGENT),
@@ -68,13 +72,13 @@ class Cloud(object):
         if page.code == 200:
             self.auth_success = 1
             return True
-        raise False
+        return False
 
     def item_info(self, uri):
         validator = '%s%s' % (PROTOCOL, URI)
         if validator in uri:
             return json.load(self.opener.open(uri))
-        return False
+        raise CloudException('URI not valid')
 
     def list_items(self, page=False, per_page=False, file_type=False, deleted=False):
         if self.auth_success == 0:
@@ -110,9 +114,11 @@ class Cloud(object):
         return json.load(self.auth_opener.open(request))
 
     def upload_file(self, path):
-        if FILE_UPLOAD == 0:
-            raise CloudException('Fileupload has been disabled as "poster" or'\
-                                 '"ordereddict" is not installed.')
+        if not POSTER:
+            raise CloudException('Poster is not installed')
+        if not ORDERED_DICT:
+            raise CloudException('Python 2.7 or ordereddict are not installed')
+        
         if self.auth_success == 0:
             raise CloudException('Not authed')
 
@@ -138,4 +144,4 @@ class Cloud(object):
         result = self.auth_opener.open(DeleteRequest(href))
         if result.code == 200:
             return True
-        raise CloudException('Deletion of failed')
+        raise CloudException('Deletion failed')
