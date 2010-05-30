@@ -10,7 +10,7 @@ a wrapper around the CloudApp_ api_.
 Requirements
 ============
 
-* Python >= 2.4
+* Python >= 2.5
 
 * poster_
 * ordereddict_
