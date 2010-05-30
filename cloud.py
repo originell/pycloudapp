@@ -48,7 +48,7 @@ import json
 import os
 
 __version_info__ = (0, 7, 0)
-__version__ = '.'.join([str(x) for x in __version_info__]
+__version__ = '.'.join([str(x) for x in __version_info__])
 
 
 # Python does not support multipart/form-data encoding out of the box
@@ -255,3 +255,12 @@ class Cloud(object):
         if result.code == 200:
             return True
         raise CloudException('Deletion failed')
+
+mycloud = Cloud()
+print mycloud.auth('luis@originell.org', 'H9v9AZG3T')
+print mycloud.list_items()
+print mycloud.item_info('http://cl.ly/0326f1344be1c98699ef')
+bookmark = mycloud.create_bookmark('origiNell', 'http://www.originell.org/')
+print bookmark
+print bookmark['href']
+print mycloud.delete_file(bookmark['href'])
