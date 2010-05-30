@@ -1,3 +1,11 @@
+"""
+Cloud is a CloudApp API Wrapper, obviously written in Python.
+
+The code is under GNU GPL V3.0.
+The complete license text should have been shipped with this file. If this is
+not the case you can find it under http://www.gnu.org/licenses/gpl-3.0.txt.
+"""
+
 import urllib2
 import urllib
 import json
