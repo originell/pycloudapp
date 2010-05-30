@@ -3,6 +3,10 @@ import urllib
 import json
 import os
 
+__version_info__ = (0, 7, 0)
+__version__ = '.'.join([str(x) for x in __version_info__]
+
+
 # Python does not support multipart/form-data encoding out of the box
 try:
     import poster
@@ -20,9 +24,6 @@ except ImportError:
         from ordereddict import OrderedDict
     except ImportError:
         ORDERED_DICT = False
-
-# TODO: Tuple
-__version__ = '0.6'
 
 PROTOCOL = 'http://'
     
