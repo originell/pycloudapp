@@ -48,7 +48,7 @@ class Cloud(object):
         self.auth_success = 0
 
     def auth(self, username, password):
-        if self.auth_success = 1:
+        if self.auth_success == 1:
             return True
         
         passwordmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
