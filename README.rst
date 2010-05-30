@@ -24,7 +24,13 @@ HowTo
     >>> from pycloudapp.cloud import Cloud
     >>> mycloud = Cloud()
     >>> mycloud.auth('yourusername', 'yourpassword')
-    >>> mycloud.upload_file('somefile.png')
+    >>> mycloud.list_items()
+    >>> mycloud.list_items(page=1, per_page=2)
+    >>> mycloud.item_info('http://cl.ly/someID'
+    >>> bookmark = mycloud.create_bookmark('origiNell', 'http://www.originell.org/')
+    >>> print bookmark
+    >>> print bookmark['href']
+    >>> mycloud.delete_file(bookmark['href'])
 
 License
 =======
