@@ -1,5 +1,5 @@
 TODO:
 
     Implement Proxy
-    Write Documentation
     Maybe some CloudFile Representation class with dynamic attributes?
+    Use a subclass of DeprecationWarning if not poster/ordereddict installed
