@@ -56,7 +56,7 @@ class DeleteRequest(urllib2.Request):
     """A HTTP DELETE request."""
     def get_method(self):
         """Sets the HTTP method to DELETE."""
-        return "DELETE"
+        return 'DELETE'
 
 class Cloud(object):
     def __init__(self):
