@@ -33,7 +33,7 @@ The following values are available:
         a tuple filled with available filetypes.
 
 The following classes are available:
-    - CloudExcepton
+    - CloudException
         An exception thrown on errors with Cloud.
     - DeleteRequest
         A HTTP DELETE request.
@@ -255,12 +255,3 @@ class Cloud(object):
         if result.code == 200:
             return True
         raise CloudException('Deletion failed')
-
-mycloud = Cloud()
-print mycloud.auth('luis@originell.org', 'H9v9AZG3T')
-print mycloud.list_items()
-print mycloud.item_info('http://cl.ly/0326f1344be1c98699ef')
-bookmark = mycloud.create_bookmark('origiNell', 'http://www.originell.org/')
-print bookmark
-print bookmark['href']
-print mycloud.delete_file(bookmark['href'])
