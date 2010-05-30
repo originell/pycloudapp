@@ -116,7 +116,7 @@ class Cloud(object):
         """
         Init.
 
-        '''opener''' is for functions that do not need authentication.
+        *opener* is for functions that do not need authentication.
         
         """
         self.opener = urllib2.build_opener()
