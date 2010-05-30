@@ -4,6 +4,12 @@ Cloud is a CloudApp API Wrapper, obviously written in Python.
 The code is under GNU GPL V3.0.
 The complete license text should have been shipped with this file. If this is
 not the case you can find it under http://www.gnu.org/licenses/gpl-3.0.txt.
+
+'''cloud.__version_info__''' is a 3-tuple containing the version number.
+(major, minor, maintenance)
+
+'''cloud.__version__''' is a string generated from __version_info__.
+major.minor.maintenance
 """
 
 import urllib2
@@ -43,10 +49,13 @@ FILE_TYPES = ('image', 'bookmark', 'test', 'archive', 'audio', 'video', 'unknown
 
 
 class CloudException(Exception):
+    """An exception thrown on errors with cloud."""
     pass
 
 class DeleteRequest(urllib2.Request):
+    """A HTTP DELETE request."""
     def get_method(self):
+        """Sets the HTTP method to DELETE."""
         return "DELETE"
 
 class Cloud(object):
