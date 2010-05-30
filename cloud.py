@@ -83,7 +83,8 @@ class CloudException(Exception):
     pass
 
 class DeleteRequest(urllib2.Request):
-    """A HTTP DELETE request.
+    """
+    A HTTP DELETE request.
 
     Public methods:
         - get_method
@@ -95,7 +96,8 @@ class DeleteRequest(urllib2.Request):
         return 'DELETE'
 
 class Cloud(object):
-    """The pythonic CloudApp API Wrapper.
+    """
+    The pythonic CloudApp API Wrapper.
 
     Public methods:
         - auth(username, password)
@@ -123,7 +125,8 @@ class Cloud(object):
         self.auth_success = 0
 
     def auth(self, username, password):
-        """Authenticate the given username with the given password.
+        """
+        Authenticate the given username with the given password.
 
         If poster is installed, build an upload handler.
 
@@ -165,7 +168,8 @@ class Cloud(object):
         raise CloudException('URI not valid')
 
     def list_items(self, page=False, per_page=False, file_type=False, deleted=False):
-        """List the authenticated user's items.
+        """
+        List the authenticated user's items.
 
         Optional arguments:
             - *page*
@@ -210,7 +214,8 @@ class Cloud(object):
         return json.load(self.auth_opener.open(request))
 
     def upload_file(self, path):
-        """Upload a file.
+        """
+        Upload a file.
 
         This function requires you to be authenticated.
         
