@@ -219,7 +219,7 @@ class Cloud(object):
 
         This function requires you to be authenticated.
         
-        Furthermore you need to have poster installed as well was python 2.7 or
+        Furthermore you need to have poster installed as well as python 2.7 or
         ordereddict.
         
         """
