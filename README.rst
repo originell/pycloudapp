@@ -18,6 +18,11 @@ In order to upload files you need to have:
 
 Both of these are available in pypi.
 
+Installation
+============
+
+    >>> pip install -e git+git://github.com/originell/pycloudapp.git#egg=cloudapp
+
 HowTo
 =====
 
