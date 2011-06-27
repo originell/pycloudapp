@@ -15,13 +15,18 @@ Requirements
 In order to upload files you need to have:
     - poster_
     - ordereddict_
-    
+
 Both of these are available in pypi.
+
+Installation
+============
+
+    >>> pip install -e git+git://github.com/originell/pycloudapp.git#egg=cloudapp
 
 HowTo
 =====
 
-    >>> from pycloudapp.cloud import Cloud
+    >>> from cloudapp.cloud import Cloud
     >>> mycloud = Cloud()
     >>> mycloud.auth('yourusername', 'yourpassword')
     >>> mycloud.list_items()
