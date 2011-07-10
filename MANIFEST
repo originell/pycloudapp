@@ -1,0 +1,5 @@
+setup.py
+cloudapp/__init__.py
+cloudapp/cloud.py
+include LICENSE
+include README.rst
