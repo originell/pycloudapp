@@ -42,14 +42,10 @@ The following classes are available:
 
 """
 
-import urllib2
-import urllib
-import json
 import os
-
-__version_info__ = (0, 7, 0)
-__version__ = '.'.join([str(x) for x in __version_info__])
-
+import urllib
+import urllib2
+import json
 
 # Python does not support multipart/form-data encoding out of the box
 try:
@@ -69,18 +65,24 @@ except ImportError:
     except ImportError:
         ORDERED_DICT = False
 
+
+__version_info__ = (0, 7, 0)
+__version__ = '.'.join([str(x) for x in __version_info__])
+
 PROTOCOL = 'http://'
-    
+
 URI = 'cl.ly'
 AUTH_URI = 'my.cl.ly'
 USER_AGENT = 'Cloud API Python Wrapper/%s' % __version__
 
-FILE_TYPES = ('image', 'bookmark', 'test', 'archive', 'audio', 'video', 'unknown')
+FILE_TYPES = ('image', 'bookmark', 'test', 'archive', 'audio', 'video',
+              'unknown')
 
 
 class CloudException(Exception):
     """An exception thrown on errors with cloud."""
     pass
+
 
 class DeleteRequest(urllib2.Request):
     """
@@ -95,6 +97,7 @@ class DeleteRequest(urllib2.Request):
         """Sets the HTTP method to DELETE."""
         return 'DELETE'
 
+
 class Cloud(object):
     """
     The pythonic CloudApp API Wrapper.
@@ -104,20 +107,21 @@ class Cloud(object):
             Authenticates a user.
         - item_info(url)
             Get metadata about a cl.ly URL.
-        - list_items(page=False, per_page=False, file_type=False, deleted=False)
+        - list_items(page=False, per_page=False, file_type=False,
+                     deleted=False)
             List the authenticated user's items.
         - create_bookmark(name, url)
             Creates a bookmark with the given name and url.
         - upload_file(path)
             Upload a file.
-            
+
     """
     def __init__(self):
         """
         Init.
 
         *opener* is for functions that do not need authentication.
-        
+
         """
         self.opener = urllib2.build_opener()
         self.opener.addheaders = [('User-Agent', USER_AGENT),
@@ -133,7 +137,7 @@ class Cloud(object):
         """
         if self.auth_success == 1:
             return True
-        
+
         passwordmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
         passwordmgr.add_password(None, AUTH_URI, username, password)
         auth = urllib2.HTTPDigestAuthHandler(passwordmgr)
@@ -154,7 +158,8 @@ class Cloud(object):
     def _test_auth(self):
         """Test authentication."""
         query = urllib.urlencode({'page': 1, 'per_page': 1})
-        page = self.auth_opener.open('%s%s/items?%s' % (PROTOCOL, AUTH_URI, query))
+        page = self.auth_opener.open('%s%s/items?%s'
+                                        % (PROTOCOL, AUTH_URI, query))
         if page.code == 200:
             self.auth_success = 1
             return True
@@ -167,7 +172,8 @@ class Cloud(object):
             return json.load(self.opener.open(uri))
         raise CloudException('URI not valid')
 
-    def list_items(self, page=False, per_page=False, file_type=False, deleted=False):
+    def list_items(self, page=False, per_page=False, file_type=False,
+                   deleted=False):
         """
         List the authenticated user's items.
 
@@ -180,11 +186,11 @@ class Cloud(object):
                 Filter items by types found in FILTER_TYPES
             - *deleted*
                 a boolean. Show trashed items.
-        
+
         """
         if self.auth_success == 0:
             raise CloudException('Not authed')
-        
+
         params = {}
         if page:
             params['page'] = int(page)
@@ -198,7 +204,9 @@ class Cloud(object):
             params['deleted'] = bool(deleted)
 
         query = urllib.urlencode(params)
-        return json.load(self.auth_opener.open('%s%s/items?%s' % (PROTOCOL, AUTH_URI, query)),
+        return json.load(self.auth_opener.open('%s%s/items?%s'
+                                                % (PROTOCOL, AUTH_URI,
+                                                   query)),
                          encoding='utf-8')
 
     def create_bookmark(self, name, bookmark_uri):
@@ -218,16 +226,16 @@ class Cloud(object):
         Upload a file.
 
         This function requires you to be authenticated.
-        
+
         Furthermore you need to have poster installed as well as python 2.7 or
         ordereddict.
-        
+
         """
         if not POSTER:
             raise CloudException('Poster is not installed')
         if not ORDERED_DICT:
             raise CloudException('Python 2.7 or ordereddict are not installed')
-        
+
         if self.auth_success == 0:
             raise CloudException('Not authed')
 
@@ -236,11 +244,13 @@ class Cloud(object):
         if not os.path.isfile(path):
             raise CloudException('The given path does not point to a file')
 
-        directives = json.load(self.auth_opener.open('%s%s/items/new' % (PROTOCOL, AUTH_URI)))
+        directives = json.load(self.auth_opener.open('%s%s/items/new'
+                                                      % (PROTOCOL, AUTH_URI)))
         directives['params']['key'] = directives['params']['key'] \
                                       .replace('${filename}',
                                                os.path.split(path)[-1])
-        upload_values = OrderedDict(sorted(directives['params'].items(), key=lambda t: t[0]))
+        upload_values = OrderedDict(sorted(directives['params'].items(),
+                                           key=lambda t: t[0]))
         upload_values['file'] = open(path, 'rb').read()
         datagen, headers = poster.encode.multipart_encode(upload_values)
         request = urllib2.Request(directives['url'], datagen, headers)
