@@ -80,22 +80,24 @@ FILE_TYPES = ('image', 'bookmark', 'test', 'archive', 'audio', 'video',
 
 
 class CloudException(Exception):
-    """An exception thrown on errors with cloud."""
+    """An exception thrown on errors with CloudApp."""
     pass
 
 
 class DeleteRequest(urllib2.Request):
-    """
-    A HTTP DELETE request.
+    """A HTTP DELETE request."""
 
-    Public methods:
-        - get_method
-            Sets the HTTP method to DELETE.
-
-    """
     def get_method(self):
         """Sets the HTTP method to DELETE."""
         return 'DELETE'
+
+
+class PutRequest(urllib2.Request):
+    """A HTTP PUT request."""
+
+    def get_method(self):
+        """Sets the HTTP method to PUT."""
+        return 'PUT'
 
 
 class Cloud(object):
