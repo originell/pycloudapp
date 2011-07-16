@@ -116,15 +116,15 @@ class Cloud(object):
             Creates a bookmark with the given name and url.
         - upload_file(path)
             Upload a file.
-
     """
+
     def __init__(self):
         """
         Init.
 
         *opener* is for functions that do not need authentication.
-
         """
+
         self.opener = urllib2.build_opener()
         self.opener.addheaders = [('User-Agent', USER_AGENT),
                                   ('Accept', 'application/json'),]
@@ -135,8 +135,8 @@ class Cloud(object):
         Authenticate the given username with the given password.
 
         If poster is installed, build an upload handler.
-
         """
+
         if self.auth_success == 1:
             return True
 
@@ -188,8 +188,8 @@ class Cloud(object):
                 Filter items by types found in FILTER_TYPES
             - *deleted*
                 a boolean. Show trashed items.
-
         """
+
         if self.auth_success == 0:
             raise CloudException('Not authed')
 
@@ -223,7 +223,7 @@ class Cloud(object):
 
         return json.load(self.auth_opener.open(request))
 
-    def upload_file(self, path):
+    def upload_file(self, path, private=None):
         """
         Upload a file.
 
@@ -232,7 +232,10 @@ class Cloud(object):
         Furthermore you need to have poster installed as well as python 2.7 or
         ordereddict.
 
+        Optionally you can override the user's default privacy setting by 
+        settings `private` to the wanted boolean.
         """
+
         if not POSTER:
             raise CloudException('Poster is not installed')
         if not ORDERED_DICT:
@@ -246,8 +249,19 @@ class Cloud(object):
         if not os.path.isfile(path):
             raise CloudException('The given path does not point to a file')
 
-        directives = json.load(self.auth_opener.open('%s%s/items/new'
-                                                      % (PROTOCOL, AUTH_URI)))
+        url = '%s%s/items/new' % (PROTOCOL, AUTH_URI)
+        if private is not None:
+            # This could be shorter by just using the
+            # string representation of the boolean
+            # but I don't even trust users of the
+            # wrapper. Furthermore I think it is
+            # more "pythonic" this way.
+            if private:
+                url += '[private]=true'
+            else:
+                url += '[private]=false'
+
+        directives = json.load(self.auth_opener.open(url))
         directives['params']['key'] = directives['params']['key'] \
                                       .replace('${filename}',
                                                os.path.split(path)[-1])
@@ -267,3 +281,4 @@ class Cloud(object):
         if result.code == 200:
             return True
         raise CloudException('Deletion failed')
+
