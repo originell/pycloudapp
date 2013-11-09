@@ -2,10 +2,9 @@
 pycloudapp
 ==========
 
-is
---
-
 a wrapper around the CloudApp_ api_.
+
+Note that this project is dead because I started using droplr.
 
 Requirements
 ============
